@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/w3.css' %}" />
+    <script src="{% static 'javascript/showDetails.js' %}"></script>
+    <title>{{ site.site_name }}</title>
+</head>
+<body>
+    <div class="w3-bar w3-black">
+        <button class="w3-bar-item w3-button tablink" onclick="parent.location='/steplogic'">Home</button>
+        <button class="w3-bar-item w3-button tablink w3-red" onclick="showDetails(event,'site')">Site Details</button>
+        <button class="w3-bar-item w3-button tablink" onclick="showDetails(event,'contacts')">Contacts</button>
+        <button class="w3-bar-item w3-button tablink" onclick="showDetails(event,'environment')">Environment</button>
+        <button class="w3-bar-item w3-button tablink" onclick="showDetails(event,'dependent_service')">Dependent Services</button>
+    </div>
+    &nbsp;
+    <div id="site" class="w3-container w3-border details" style="display:block">
+        <table>
+            <tr><td>Site Name:</td><td>{{ site.site_name }}</td></tr>
+            <tr><td>ELR:</td><td>{{ site.elr }}</td></tr>
+            <tr><td>Working Hours:</td><td>{{ site.working_hours }}</td></tr>
+            <tr><td>Service:</td><td>{{ site.service_name }}</td></tr>
+        </table>
+    </div>
+    &nbsp;
+    <div id="contacts" class="w3-container w3-border details" style="display:none">
+        <table>
+            <tr><th>Email</th><th>First Name</th><th>Last Name</th><th>Working Hours</th><th>Contact Type</th></tr>
+        {% for contact in site.contacts.all %}
+            <tr><td>{{ contact.email }}</td><td>{{ contact.first_name }}</td><td>{{ contact.last_name }}</td><td>{{ contact.working_hours }}</td><td>{{ contact.contact_type }}</td></tr>
+        {% endfor %}
+        </table>
+    </div>
+    &nbsp;
+    <div id="dependent_service" class="w3-container w3-border details" style="display:none">
+        <table>
+            <tr><th>Service Name</th><th>Service Description</th><th>External Link</th></tr>
+        {% for service in site.dependent_service.all %}
+            <tr><td>{{ service.service_name }}</td><td>{{ service.service_description }}</td><td><a href="{{ service.external_link }}">{{ service.external_link }}</a></td></tr>
+        {% endfor %}
+        </table>
+    </div>
+    &nbsp;
+    <div id="environment" class="w3-container w3-border details" style="display:none">
+        <table>
+            <tr><th>Environment Description</th><th>BIG-ip URL</th><th>URL</th><th>environment_type</th></tr>
+        {% for environment in environment_list.all %}
+            <tr><td>{{ environment.environment_description }}</td><td><a href="{{ environment.bigip_url }}">{{ environment.bigip_url }}</a></td><td><a href="{{ environment.url }}">{{ environment.url }}</a></td><td>{{ environment.get_environment_type_display }}</td></tr>
+        {% endfor %}
+        </table>
+    </div>
+</body>
+</html>    
