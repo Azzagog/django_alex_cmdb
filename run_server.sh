@@ -8,7 +8,7 @@ python manage.py migrate &&
 echo 'migrations applied'
 
 ###collect static
-rm -rf static_collect
+[[ -d static_collect ]] && rm -rf static_collect
 python manage.py collectstatic && echo 'static files collected'
 
 ###run the server

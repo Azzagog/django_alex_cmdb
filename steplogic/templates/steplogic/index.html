@@ -17,6 +17,7 @@
   <div class="w3-container w3-border">
       {% if sites_list %}
           <table class="sortable w3-table">
+            <h1>Hello Alex</h1>
               <tr><th>Site Name</th><th>ELR</th><th>Working Hours</th><th>Service Name</th></tr>
           {% for site in sites_list %}
               <tr><td><a href="/steplogic/{{ site.site_name }}/">{{ site.site_name }}</a></td><td>{{ site.elr }}</td><td>{{ site.working_hours }}</td><td>{{ site.service_name }}</td></tr>
