@@ -1,0 +1,16 @@
+#!/bin/bash
+
+### temporary init script needs to be rewritten in python
+
+###apply migration
+python manage.py makemigrations steplogic &&
+python manage.py migrate &&
+echo 'migrations applied'
+
+###collect static
+rm -rf static_collect
+python manage.py collectstatic && echo 'static files collected'
+
+###run the server
+python manage.py runserver 0.0.0.0:8000
+

@@ -13,7 +13,7 @@ services:
       - "5432"
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash run_server.sh
     volumes:
       - .:/code
     ports:
