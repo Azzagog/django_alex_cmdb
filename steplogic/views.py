@@ -4,6 +4,7 @@ from django.http.response import Http404, HttpResponseServerError
 from steplogic.models import *
 from django.http import HttpResponse
 from django.template import loader
+from django.contrib.auth.models import Permission, User
 
 
 def index(request):
@@ -47,6 +48,23 @@ def detail(request, site_name):
         'environment_list': environment_list,
     }
     return HttpResponse(template.render(context, request))
+
+def Environment(request,site_name, environment_description):
+    
+    template = loader.get_template('steplogic/environment.html')
+    site = Sites.objects.get(site_name=site_name)
+    environment = Env.objects.get(environment_description=environment_description)
+    credentials_list = Credentials.objects.filter(environment=environment)
+    database_list = Database_info.objects.filter(environment=environment)
+    print(type(environment))
+    context= {
+        'site': site,
+        'environment' : environment,
+        'credentials_list' : credentials_list,
+        'database_list' : database_list
+    }
+
+    return HttpResponse(template.render(context,request))
 
 def edit(request, site_name):
     response = "you are editing %s."

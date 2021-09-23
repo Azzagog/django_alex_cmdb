@@ -74,25 +74,6 @@ class Servers(models.Model):
     def __str__(self):
         return self.server_name
 
-class Database_info(models.Model):
-    cluster_name = models.CharField(max_length=200)
-    cluster_ip = models.CharField(max_length=200)
-    database_desc = models.CharField(max_length=200)
-    user = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
-    db_version = models.TextChoices('DB_VERSION', "ORA12.X ORA18.X ORA19.X")
-
-    def __str__(self):
-        return self.cluster_name
-
-class Credentials(models.Model):
-    credential_name = models.CharField(max_length=200)
-    credential_secret = models.CharField(max_length=200)
-    credential_description = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.credential_name
-
 class Sites(models.Model):
     site_name = models.CharField(max_length=200, unique=True)
     service_name = models.ForeignKey(Service_name, on_delete=models.CASCADE)
@@ -117,11 +98,31 @@ class Env(models.Model):
     bigip_url = models.URLField(blank=True)
     url = models.URLField()
     environment_type = models.CharField(max_length=5, choices=ENVIRONMENT_TYPES)
-    credentials = models.ForeignKey(Credentials, on_delete=models.CASCADE)
-    database_info = models.ForeignKey(Database_info, on_delete=models.CASCADE)
+    #credentials = models.ForeignKey(Credentials, on_delete=models.CASCADE)
+    #database_info = models.ForeignKey(Database_info, on_delete=models.CASCADE)
     site = models.ForeignKey(Sites, on_delete=CASCADE)
 
 
     def __str__(self):
         return self.environment_description
 
+class Credentials(models.Model):
+    credential_name = models.CharField(max_length=200)
+    credential_secret = models.CharField(max_length=200)
+    credential_description = models.CharField(max_length=200)
+    environment = models.ForeignKey(Env, on_delete=CASCADE)
+
+    def __str__(self):
+        return self.credential_name
+
+class Database_info(models.Model):
+    cluster_name = models.CharField(max_length=200)
+    cluster_ip = models.CharField(max_length=200)
+    database_desc = models.CharField(max_length=200)
+    user = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
+    db_version = models.TextChoices('DB_VERSION', "ORA12.X ORA18.X ORA19.X")
+    environment = models.ForeignKey(Env, on_delete=CASCADE)
+
+    def __str__(self):
+        return self.cluster_name
