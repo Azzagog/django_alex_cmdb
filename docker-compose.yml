@@ -16,6 +16,13 @@ services:
     command: bash run_server.sh
     volumes:
       - .:/code
+    environment:
+      - ENGINE=django.db.backends.postgresql
+      - NAME=postgres
+      - USER=postgres
+      - PASSWORD=postgres
+      - HOST=db
+      - PORT=5432
     ports:
       - "8000:8000"
     depends_on:
