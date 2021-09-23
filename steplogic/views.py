@@ -50,7 +50,7 @@ def detail(request, site_name):
     return HttpResponse(template.render(context, request))
 
 def Environment(request,site_name, environment_description):
-    
+    #err
     template = loader.get_template('steplogic/environment.html')
     site = Sites.objects.get(site_name=site_name)
     environment = Env.objects.get(environment_description=environment_description)
