@@ -5,25 +5,25 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/w3.css' %}" />
     <script src="{% static 'javascript/showDetails.js' %}"></script>
-    <title>{{ site.site_name }}</title>
+    <title>{{ site.site_name }} contacts</title>
 </head>
 <body>
     <div class="w3-bar w3-black">
         <button class="w3-bar-item w3-button w3-red" onclick="parent.location='/steplogic'">steplogic</button>
     </div>
     <div class="w3-bar w3-blue" >
-        <button class="w3-bar-item w3-button w3-red" onclick="parent.location='/steplogic/{{ site.site_name }}'">{{ site.site_name }}</button>
-        <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}/contacts'">Contacts</button>
+        <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}'">{{ site.site_name }}</button>
+        <button class="w3-bar-item w3-button w3-red" onclick="parent.location='/steplogic/{{ site.site_name }}/contacts'">Contacts</button>
         <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}/environment'">Environment</button>
         <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}/dependent_service'">Dependent Services</button>
     </div>
     &nbsp;
-    <div id="site" class="w3-container w3-border details" style="display:block">
+    <div id="contacts" class="w3-container w3-border details" style="display:block">
         <table>
-            <tr><td>Site Name:</td><td>{{ site.site_name }}</td></tr>
-            <tr><td>ELR:</td><td>{{ site.elr }}</td></tr>
-            <tr><td>Working Hours:</td><td>{{ site.working_hours }}</td></tr>
-            <tr><td>Service:</td><td>{{ site.service_name }}</td></tr>
+            <tr><th>Email</th><th>First Name</th><th>Last Name</th><th>Working Hours</th><th>Contact Type</th></tr>
+        {% for contact in site.contacts.all %}
+            <tr><td>{{ contact.email }}</td><td>{{ contact.first_name }}</td><td>{{ contact.last_name }}</td><td>{{ contact.working_hours }}</td><td>{{ contact.contact_type }}</td></tr>
+        {% endfor %}
         </table>
     </div>
 </body>

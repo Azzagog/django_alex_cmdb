@@ -5,6 +5,8 @@ from steplogic.models import *
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.models import Permission, User
+from django.shortcuts import get_object_or_404, render
+
 
 
 def index(request):
@@ -23,35 +25,25 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def detail(request, site_name):
-    try:
-        #site = Sites.objects.get(site_name=site_name)
-        site_count = Sites.objects.filter(site_name=site_name).count()
-        if site_count > 1:
-            raise HttpResponseServerError("More than one site found. Impossible error!")
+    site = get_object_or_404(Sites, site_name=site_name)
+    return render(request, 'steplogic/detail.html', {'site' : site})
 
-        #sites_list = Sites.objects.filter(site_name=site_name).prefetch_related('contacts', 'dependent_service', 'environment')
-        #for item in sites_list:
-        #    site = item
+def contacts(request, site_name):
+    site = get_object_or_404(Sites, site_name=site_name)
+    return render(request, 'steplogic/contacts.html', {'site' : site})
 
-        site = Sites.objects.get(site_name=site_name)
+def environment(request, site_name):
+    site = get_object_or_404(Sites, site_name=site_name)
+    return render(request, 'steplogic/environment.html', {'site' : site})
 
-        environment_list = Env.objects.filter(site=site)
+def dependent_service(request, site_name):
+    site = get_object_or_404(Sites, site_name=site_name)
+    return render(request, 'steplogic/dependent_service.html', {'site' : site})
 
-        #for environment in environment_list:
-       #     print(environment.get_environment_type_display())
 
-    except Sites.DoesNotExist:
-        raise Http404("site does not exists")
-    template = loader.get_template('steplogic/detail.html')
-    context = {
-        'site': site,
-        'environment_list': environment_list,
-    }
-    return HttpResponse(template.render(context, request))
-
-def Environment(request,site_name, environment_description):
+def environment_detail(request,site_name, environment_description):
     #err
-    template = loader.get_template('steplogic/environment.html')
+    template = loader.get_template('steplogic/environment_detail.html')
     site = Sites.objects.get(site_name=site_name)
     environment = Env.objects.get(environment_description=environment_description)
     credentials_list = Credentials.objects.filter(environment=environment)

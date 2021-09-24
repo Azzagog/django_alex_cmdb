@@ -5,44 +5,26 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/w3.css' %}" />
     <script src="{% static 'javascript/showDetails.js' %}"></script>
-    <script src="{% static 'javascript/sorttable.js' %}"></script>
-    <title>{{ site.site_name }}</title>
+    <title>{{ site.site_name }} environment</title>
 </head>
 <body>
     <div class="w3-bar w3-black">
-        <button class="w3-bar-item w3-button tablink" onclick="parent.location='/steplogic'">Home</button>
-        <button class="w3-bar-item w3-button tablink" onclick="showDetails(event,'site')">Site Details</button>
-        <button class="w3-bar-item w3-button tablink" onclick="showDetails(event,'contacts')">Contacts</button>
-        <button class="w3-bar-item w3-button tablink w3-red" onclick="showDetails(event,'environment')">Environment</button>
-        <button class="w3-bar-item w3-button tablink" onclick="showDetails(event,'dependent_service')">Dependent Services</button>
+        <button class="w3-bar-item w3-button w3-red" onclick="parent.location='/steplogic'">steplogic</button>
+    </div>
+    <div class="w3-bar w3-blue" >
+        <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}'">{{ site.site_name }}</button>
+        <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}/contacts'">Contacts</button>
+        <button class="w3-bar-item w3-button w3-red" onclick="parent.location='/steplogic/{{ site.site_name }}/environment'">Environment</button>
+        <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}/dependent_service'">Dependent Services</button>
     </div>
     &nbsp;
     <div id="environment" class="w3-container w3-border details" style="display:block">
-        <table class="sortable w3-table">
+        <table>
             <tr><th>Environment Description</th><th>BIG-ip URL</th><th>URL</th><th>environment_type</th></tr>
-            <tr><td><a href="/steplogic/{{ site.site_name }}/{{ environment.get_environment_type_display }}">{{ environment.environment_description }}</a></td><td><a href="{{ environment.bigip_url }}">{{ environment.bigip_url }}</a></td><td><a href="{{ environment.url }}">{{ environment.url }}</a></td><td>{{ environment.get_environment_type_display }}</td></tr>
-        </table>
-    </div>
-    &nbsp;
-    <div id="credentials" class="w3-container w3-border details" style="display:block">
-        <h3>credentials</h3>
-        <table class="sortable w3-table">
-            <tr><th>description</th><th>name</th><th>password</th></tr>
-        {% for credential in credentials_list.all %}
-            <tr><td>{{ credential.credential_description }}</td><td>{{ credential.credential_name }}</td><td>{{ credential.credential_secret }}</td></tr>
+        {% for environment in site.env_set.all %}
+            <tr><td><a href="/steplogic/{{ site.site_name }}/environment/{{ environment.environment_description }}">{{ environment.environment_description }}</a></td><td><a href="{{ environment.bigip_url }}">{{ environment.bigip_url }}</a></td><td><a href="{{ environment.url }}">{{ environment.url }}</a></td><td>{{ environment.get_environment_type_display }}</td></tr>
         {% endfor %}
         </table>
     </div>
-    &nbsp;
-    <div id="database_details" class="w3-container w3-border details" style="display:block">
-        <h3>database</h3>
-        <table class="sortable w3-table">
-            <tr><th>cluster name</th><th>cluster ip</th><th>database description</th><th>database user</th><th>database password</th></tr>
-        {% for database in database_list.all %}
-            <tr><td>{{ database.cluster_name }}</td><td>{{ database.cluster_ip }}</td><td>{{ database.database_desc }}</td><td>{{ database.user }}</td><td>{{ database.password }}</td></tr>
-        {% endfor %}
-        </table>
-    </div>
-
 </body>
 </html>    
