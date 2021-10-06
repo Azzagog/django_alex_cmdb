@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [ '*' ]
 # Application definition
 
 INSTALLED_APPS = [
+    'centiro.apps.CentiroConfig',
     'steplogic.apps.SteplogicConfig',
     'django.contrib.admin',
     'django.contrib.auth',

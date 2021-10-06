@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+  <meta charset="UTF-8">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/w3.css' %}"/>
+  <script src="{% static 'javascript/showDetails.js' %}"></script>
+  <script src="{% static 'javascript/sorttable.js' %}"></script>
+  <title>centiro_cmdb</title>
+</head>
+<body class=>
+  <div class="w3-bar w3-black">
+    <button class="w3-bar-item w3-button tablink w3-red" onclick="parent.location='/centiro'">centiro</button>
+  </div>
+  &nbsp;
+  <div class="w3-container w3-border">
+      {% if sites_list %}
+          <table class="sortable w3-table">
+              <tr><th>Site Name</th><th>ELR</th><th>Working Hours</th><th>Service Name</th></tr>
+          {% for site in sites_list %}
+              <tr><td><a href="/centiro/{{ site.site_name }}/">{{ site.site_name }}</a></td><td>{{ site.elr }}</td><td>{{ site.working_hours }}</td><td>{{ site.service_name }}</td></tr>
+          {% endfor %}
+          </table>
+      {% else %}
+          <p>No sites are available.</p>
+      {% endif %}
+  </div>
+  
+</body>
+</html>
