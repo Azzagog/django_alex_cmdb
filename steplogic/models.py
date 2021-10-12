@@ -2,6 +2,8 @@ from typing import Optional
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.expressions import Case
+from django_cryptography.fields import encrypt
+
 
 # Create your models here.
 
@@ -144,7 +146,7 @@ class Servers(models.Model):
 
 class Credentials(models.Model):
     credential_name = models.CharField(max_length=200)
-    credential_secret = models.CharField(max_length=200)
+    credential_secret = encrypt(models.CharField(max_length=200))
     credential_description = models.CharField(max_length=200)
     environment = models.ForeignKey(Env, on_delete=CASCADE)
 
