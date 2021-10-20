@@ -41,14 +41,22 @@ def contacts(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
     return render(request, 'steplogic/contacts.html', {'site' : site})
 
-def environment(request, site_name):
-    site = get_object_or_404(Sites, site_name=site_name)
-    return render(request, 'steplogic/environment.html', {'site' : site})
+#def environment(request, site_name):
+#    site = get_object_or_404(Sites, site_name=site_name)
+#    return render(request, 'steplogic/environment.html', {'site' : site})
 
 def dependent_service(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
     return render(request, 'steplogic/dependent_service.html', {'site' : site})
 
+def environments(request):    
+    environments_list = Env.objects.all()
+    template = loader.get_template('steplogic/environment.html')
+    context = {
+        'environments_list': environments_list,     
+    }
+
+    return HttpResponse(template.render(context, request))
 
 def environment_detail(request,site_name, environment_description):
     #err

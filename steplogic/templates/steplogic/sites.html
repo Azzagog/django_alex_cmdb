@@ -67,7 +67,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="/steplogic" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-sitemap fa-fw"></i>&nbsp; Sites</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-key fa-fw"></i>&nbsp; Credentials</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-server fa-fw"></i>&nbsp; Servers</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cubes fa-fw"></i>&nbsp; Environments</a>
+    <a href="/steplogic/environments" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cubes fa-fw"></i>&nbsp; Environments</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>&nbsp; Contacts</a>
   </div>
 </nav>
@@ -136,7 +136,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <!-- CONTACTS -->
         <div id="mnucontacts" class="tab-pane fade">
           <div class="w3-container">
-            <table id="environmentstbl" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+            <table id="contactstbl" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
               <thead>
                 <tr><th>Email</th><th>First Name</th><th>Last Name</th><th>Working Hours</th><th>Contact Type</th></tr>
               </thead>  
@@ -151,13 +151,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <!-- ENVIRONMENTS -->
         <div id="mnuenv" class="tab-pane fade">
           <div class="w3-container">
-            <table id="contactstbl" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+            <table id="environmentstbl" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
               <thead>
                 <tr><th>Environment Description</th><th>BIG-ip URL</th><th>URL</th><th>environment_type</th></tr>
               </thead>  
               <tbody>
                 {% for environment in site.env_set.all %}
-                  <tr><td><a href="/steplogic/{{ site.site_name }}/environment/{{ environment.environment_description }}">{{ environment.environment_description }}</a></td><td><a href="{{ environment.bigip_url }}">{{ environment.bigip_url }}</a></td><td><a href="{{ environment.url }}">{{ environment.url }}</a></td><td>{{ environment.get_environment_type_display }}</td></tr>
+                  <tr><td><a href="/steplogic/{{ site.site_name }}/environments/{{ environment.environment_description }}">{{ environment.environment_description }}</a></td><td><a href="{{ environment.bigip_url }}">{{ environment.bigip_url }}</a></td><td><a href="{{ environment.url }}">{{ environment.url }}</a></td><td>{{ environment.get_environment_type_display }}</td></tr>
                 {% endfor %}
               </tbody>
             </table>
