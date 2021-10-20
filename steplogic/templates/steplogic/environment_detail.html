@@ -1,228 +1,53 @@
-
 <!DOCTYPE html>
-<html>
-<title>STEOLOGIC CMDB</title>
-<meta charset="UTF-8">	
-<meta name="viewport" content="width=device-width, initial-scale=1">
-  {% load static %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/w3.css' %}"/>
-  <script src="{% static 'javascript/showDetails.js' %}"></script>
-  <script src="{% static 'javascript/sorttable.js' %}"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  
-  <link rel="stylesheet" type="text/css" href="{% static 'css/datatables.min.css' %}"/>
-  <script type="text/javascript" language="javascript" src="{% static 'javascript/jquery-3.5.1.js' %}"></script>
-  <script type="text/javascript" src="{% static 'javascript/datatables.min.js' %}"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-	<script type="text/javascript" class="init">
-
-	
-
-    $(document).ready(function() {
-      $('#credentialstbl').DataTable();
-      $('#serverstbl').DataTable();
-      $('#dbinfotbl').DataTable();
-    } );
-    
-    
-      </script>
-  <title>steplogic_cmdb</title>	
-<link rel="stylesheet" href="{% static 'fonts/raleway/css/raleway.css' %}">
-<link rel="stylesheet" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-<style>
-html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-</style>
-<body class="w3-light-grey">
-
-<!-- Top container -->
-	
-<div class="w3-bar w3-top w3-large" style="background-color:#FFCC00">
-  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i> &nbsp;Menu</button>
-  <div>
-    <span class="title"><img src="{% static 'images/DHL_rgb.png' %}" width="198" height="42" alt=""/></span>
-  </div>
- 
-</div>
-
-<!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-  <div class="w3-container w3-row">
-    <div class="w3-col s4">
-     
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/w3.css' %}" />
+    <script src="{% static 'javascript/showDetails.js' %}"></script>
+    <script src="{% static 'javascript/sorttable.js' %}"></script>
+    <title>{{ site.site_name }}</title>
+</head>
+<body>
+    <div class="w3-bar w3-black">
+        <button class="w3-bar-item w3-button w3-red" onclick="parent.location='/steplogic'">steplogic</button>
     </div>
-    <div class="w3-col s8 w3-bar">
-      <span>Welcome, <strong>Mike</strong></span><br>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+    <div class="w3-bar w3-blue" >
+        <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}'">{{ site.site_name }}</button>
+        <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}/contacts'">Contacts</button>
+        <button class="w3-bar-item w3-button w3-red" onclick="parent.location='/steplogic/{{ site.site_name }}/environment'">Environment</button>
+        <button class="w3-bar-item w3-button" onclick="parent.location='/steplogic/{{ site.site_name }}/dependent_service'">Dependent Services</button>
     </div>
-  </div>
-  <hr>
-  <div class="w3-container">
-    <h5>Dashboard</h5>
-  </div>
-  <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
-    <a href="/steplogic" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sitemap fa-fw"></i>&nbsp; Sites</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-key fa-fw"></i>&nbsp; Credentials</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-server fa-fw"></i>&nbsp; Servers</a>
-    <a href="/steplogic/environments" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-cubes fa-fw"></i>&nbsp; Environments</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>&nbsp; Contacts</a>
-  </div>
-</nav>
-
-
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-<!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;"  id="sites_id">
-
-  <!-- Header -->
-  <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-sitemap "></i><a href="/steplogic/{{ site.site_name }}/">&nbsp;{{ site.site_name }}</a> : {{ environment.environment_description }}</b></h5>
-  </header>
-
-   <div class="w3-container">
-    
-    <ul class="nav nav-pills">
-      <li class="active"><a data-toggle="pill" href="#mnuenvinfo">Environment Info</a></li>
-      <li><a data-toggle="pill" href="#mnucredentials">Credentials</a></li>
-      <li><a data-toggle="pill" href="#mnuservers">Servers</a></li>
-      <li><a data-toggle="pill" href="#mnudbinfo">Database Info</a></li>
-    </ul>
-    <br>
-    <br>
-    <div class="tab-content">
-      <!-- ENV INFO -->
-      <div id="mnuenvinfo" class="tab-pane fade in active">
-        <ul class="w3-ul w3-card-4 w3-white">
-              <li class="w3-padding-16">
-                <span class="w3-large"><b>Environment Name:</b> </span><br>
-                <ul class="w3-ul w3-card-4 w3-white">
-                  <li class="w3-padding-small">
-                    <span class="w3-medium">&nbsp;{{ environment.environment_description }}</span><br>
-                  </li>              
-                </ul>
-              </li>
-              
-              <li class="w3-padding-16">          
-                <span class="w3-large"><b>BIGIP URL:</b> </span><br>
-                <ul class="w3-ul w3-card-4 w3-white">
-                  <liclass="w3-padding-small">
-                    <span class="w3-medium">&nbsp;{{ environment.bigip_url }}</span><br>
-                  </li>              
-                </ul>            
-              </li>
-              <li class="w3-padding-16">            
-                <span class="w3-large"><b>Environment url </b></span><br>
-                <ul class="w3-ul w3-card-4 w3-white">
-                  <li class="w3-padding-small">
-                    <span class="w3-medium">&nbsp;{{ environment.url }}</span><br>
-                  </li>              
-                </ul>            
-              </li>
-              <li class="w3-padding-16">            
-                <span class="w3-large"><b>Environment Type :</b></span<br>
-                  <ul class="w3-ul w3-card-4 w3-white">
-                    <li class="w3-padding-small">
-                      <span class="w3-medium">&nbsp;{{ environment.get_environment_type_display }}</span><br>
-                    </li>              
-                  </ul>              
-              </li>          
-          </ul>
-        </div>
-        <!-- CREDENTIALS -->
-        <div id="mnucredentials" class="tab-pane fade">
-          <div class="w3-container">
-            <table id="credentialstbl" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-              <thead>
-                <tr><th>Description</th><th>Name</th><th>Secret</th></tr>
-              </thead>  
-              <tbody>
-            {% for credential in credentials_list.all %}            
-              <tr><td>{{ credential.credential_description }}</td><td>{{ credential.credential_name }}</td><td>{{ credential.credential_secret }}</td></tr>
-            {% endfor %}
-              </tbody>
-            </table>
-         </div>
-        </div>  
-        <!-- SERVERS -->
-        <div id="mnuservers" class="tab-pane fade">
-          <div class="w3-container">
-            <table id="serverstbl" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-              <thead>
-                <tr><th>Server Name</th><th>Server IP</th><th>Server Role Description</th><th>OS Version</th></tr>                           
-              </thead>  
-              <tbody>
-                {% for servers in server_list.all %}
-                <tr><td>{{ servers.server_name }}</td><td>{{ servers.server_ip }}</td><td>{{ servers.server_role_name }}</td><td>{{ servers.os_version }}</td></tr>
-                {% endfor %}
-              </tbody>
-            </table>
-         </div>
-        </div>  
-      <!-- DATABASE INFO -->
-      <div id="mnudbinfo" class="tab-pane fade">
-        <div class="w3-container">
-          <table id="dbinfotbl" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-            <thead>
-              <tr><th>Database Details</th><th>Cluster Name</th><th>Cluster IP</th><th>Service Name</th><th>DB Version</th></tr>
-            </thead>  
-            <tbody>
-              {% for databases in database_list.all %}
-              <tr><td>{{ databases.database_desc }}</td><td>{{ databases.cluster_name }}</td><td>{{ databases.cluster_ip }}</td><td>{{ databases.service_name }}</td><td>{{ databases.db_version }}</td></tr>
-              {% endfor %}
-            </tbody>
-          </table>
-       </div>
-      </div>        
-      </div>  
+    <div class="w3-bar w3-yellow">
+        <button class="w3-bar-item w3-button w3-red">{{ environment.environment_description }}</button>
     </div>
-  <hr>
-    <hr>
-
-  
-  <br>
- 
-  <!-- Footer -->
- 
-
-  <!-- End page content -->
-</div>
-
-
-
-
-
-<script>
-  // Get the Sidebar
-  var mySidebar = document.getElementById("mySidebar");
-  
-  // Get the DIV with overlay effect
-  var overlayBg = document.getElementById("myOverlay");
-  
-  // Toggle between showing and hiding the sidebar, and add overlay effect
-  function w3_open() {
-    
-    if (mySidebar.style.display === 'block') {
-      mySidebar.style.display = 'none';
-      //document.getElementById("sites_id").style.marginLeft = "0%";
-      overlayBg.style.display = "none";
-    } else {
-      //document.getElementById("sites_id").style.marginLeft = "17%";
-      mySidebar.style.display = 'block';      
-      overlayBg.style.display = "block";
-    }
-  }
-  
-  // Close the sidebar with the close button
-  function w3_close() {
-    mySidebar.style.display = "none";
-    overlayBg.style.display = "none";
-  }
-  </script>
+    &nbsp;
+    <div id="environment" class="w3-container w3-border details" style="display:block">
+        <table class="sortable w3-table">
+            <tr><th>Environment Description</th><th>BIG-ip URL</th><th>URL</th><th>environment_type</th></tr>
+            <tr><td>{{ environment.environment_description }}</td><td><a href="{{ environment.bigip_url }}">{{ environment.bigip_url }}</a></td><td><a href="{{ environment.url }}">{{ environment.url }}</a></td><td>{{ environment.get_environment_type_display }}</td></tr>
+        </table>
+    </div>
+    &nbsp;
+    <div id="credentials" class="w3-container w3-border details" style="display:block">
+        <h3>credentials</h3>
+        <table class="sortable w3-table">
+            <tr><th>description</th><th>name</th><th>password</th></tr>
+        {% for credential in credentials_list.all %}
+            <tr><td>{{ credential.credential_description }}</td><td>{{ credential.credential_name }}</td><td>{{ credential.credential_secret }}</td></tr>
+        {% endfor %}
+        </table>
+    </div>
+    &nbsp;
+    <div id="database_details" class="w3-container w3-border details" style="display:block">
+        <h3>database</h3>
+        <table class="sortable w3-table">
+            <tr><th>cluster name</th><th>cluster ip</th><th>database description</th><th>database user</th><th>database password</th></tr>
+        {% for database in database_list.all %}
+            <tr><td>{{ database.cluster_name }}</td><td>{{ database.cluster_ip }}</td><td>{{ database.database_desc }}</td><td>{{ database.user }}</td><td>{{ database.password }}</td></tr>
+        {% endfor %}
+        </table>
+    </div>
 
 </body>
-</html>
+</html>    

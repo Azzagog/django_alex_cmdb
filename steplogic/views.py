@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.models import Permission, User
 from django.shortcuts import get_object_or_404, render
-from django.contrib.auth import authenticate, login
+
 
 
 def index(request):
@@ -24,39 +24,22 @@ def index(request):
 
     return HttpResponse(template.render(context, request))
 
-def login_view(request):
-    sites_list2 = Sites.objects.all().select_related('service_name').order_by('site_name')
-    template2 = loader.get_template('steplogic/login_view.html')    
-    context2 = {
-        'sites_list': sites_list2,
-     #   'services_list': services_list
-    }     
-    return HttpResponse(template2.render(context2, request))
-
 def detail(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
-    return render(request, 'steplogic/sites.html', {'site' : site})
+    return render(request, 'steplogic/detail.html', {'site' : site})
 
 def contacts(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
     return render(request, 'steplogic/contacts.html', {'site' : site})
 
-#def environment(request, site_name):
-#    site = get_object_or_404(Sites, site_name=site_name)
-#    return render(request, 'steplogic/environment.html', {'site' : site})
+def environment(request, site_name):
+    site = get_object_or_404(Sites, site_name=site_name)
+    return render(request, 'steplogic/environment.html', {'site' : site})
 
 def dependent_service(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
     return render(request, 'steplogic/dependent_service.html', {'site' : site})
 
-def environments(request):    
-    environments_list = Env.objects.all()
-    template = loader.get_template('steplogic/environment.html')
-    context = {
-        'environments_list': environments_list,     
-    }
-
-    return HttpResponse(template.render(context, request))
 
 def environment_detail(request,site_name, environment_description):
     #err
@@ -65,16 +48,12 @@ def environment_detail(request,site_name, environment_description):
     environment = Env.objects.get(environment_description=environment_description)
     credentials_list = Credentials.objects.filter(environment=environment)
     database_list = Database_info.objects.filter(environment=environment)
-    server_list = Servers.objects.filter(environment=environment)
-    application_list = Application.objects.filter(environment=environment)    
     print(type(environment))
     context= {
         'site': site,
         'environment' : environment,
         'credentials_list' : credentials_list,
-        'database_list' : database_list,
-        'server_list' : server_list,
-        'application_list' : application_list,
+        'database_list' : database_list
     }
 
     return HttpResponse(template.render(context,request))

@@ -2,6 +2,8 @@ from typing import Optional
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.expressions import Case
+from django_cryptography.fields import encrypt
+
 
 # Create your models here.
 
@@ -128,30 +130,11 @@ class Application(models.Model):
     def __str__(self):
         return self.application_name
 
-class Server_roles(models.Model):
-    server_role_name = models.CharField(max_length=200)
-
-    class Meta:
-        verbose_name_plural = "Server_roles"
-
-    def __str__(self):
-        return self.server_role_name
-
-class Operative_system_info(models.Model):
-    os_name = models.CharField(max_length=200)
-
-    class Meta:
-        verbose_name_plural = "Operative_system_info"
-
-    def __str__(self):
-        return self.os_name
-
-
 class Servers(models.Model):
     server_name = models.CharField(max_length=200)
     server_ip = models.CharField(max_length=200)
-    server_role_name = models.ForeignKey(Server_roles, on_delete=CASCADE)
-    os_version = models.ForeignKey(Operative_system_info, on_delete=CASCADE, null=True, blank=True)
+    server_role_description = models.TextChoices('Role_desc', "APPLICATION DB")
+    os_version = models.TextChoices('Role_desc', "RHEL7 RHEL8 WS2018 WS2020")
     environment = models.ForeignKey(Env, on_delete=CASCADE)
 
     class Meta:
@@ -161,10 +144,9 @@ class Servers(models.Model):
         return self.server_name
 
 
-
 class Credentials(models.Model):
     credential_name = models.CharField(max_length=200)
-    credential_secret = models.CharField(max_length=200)
+    credential_secret = encrypt(models.CharField(max_length=200))
     credential_description = models.CharField(max_length=200)
     environment = models.ForeignKey(Env, on_delete=CASCADE)
 
@@ -174,23 +156,13 @@ class Credentials(models.Model):
     def __str__(self):
         return self.credential_name
 
-class Database_version(models.Model):
-    db_version = models.CharField(max_length=200)  
-
-    class Meta:
-        verbose_name_plural = "Databases versions"
-
-    def __str__(self):
-        return self.db_version
-
 class Database_info(models.Model):
     cluster_name = models.CharField(max_length=200)
     cluster_ip = models.CharField(max_length=200)
-    service_name = models.CharField(max_length=200, null=True, blank=True)
     database_desc = models.CharField(max_length=200)
     user = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
-    db_version = models.ForeignKey(Database_version, on_delete=CASCADE, null=True, blank=True)
+    db_version = models.TextChoices('DB_VERSION', "ORA12.X ORA18.X ORA19.X")
     environment = models.ForeignKey(Env, on_delete=CASCADE)
 
     class Meta:

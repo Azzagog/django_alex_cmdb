@@ -34,7 +34,6 @@ ALLOWED_HOSTS = [ '*' ]
 # Application definition
 
 INSTALLED_APPS = [
-    'centiro.apps.CentiroConfig',
     'steplogic.apps.SteplogicConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -136,3 +135,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#django-cryptography
+
