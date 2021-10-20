@@ -130,11 +130,21 @@ class Application(models.Model):
     def __str__(self):
         return self.application_name
 
+class Operating_system_info(models.Model):
+    os_name = models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name_plural = "Operating system info"
+
+    def __str__(self):
+        return self.os_name
+
+
 class Servers(models.Model):
     server_name = models.CharField(max_length=200)
     server_ip = models.CharField(max_length=200)
     server_role_description = models.TextChoices('Role_desc', "APPLICATION DB")
-    os_version = models.TextChoices('Role_desc', "RHEL7 RHEL8 WS2018 WS2020")
+    os_version = models.ForeignKey(Operating_system_info, on_delete=CASCADE, null=True, blank=True)
     environment = models.ForeignKey(Env, on_delete=CASCADE)
 
     class Meta:
@@ -156,13 +166,23 @@ class Credentials(models.Model):
     def __str__(self):
         return self.credential_name
 
+class Database_version(models.Model):
+    db_version = models.CharField(max_length=200)  
+
+    class Meta:
+        verbose_name_plural = "Databases versions"
+
+    def __str__(self):
+        return self.db_version
+
 class Database_info(models.Model):
     cluster_name = models.CharField(max_length=200)
     cluster_ip = models.CharField(max_length=200)
+    service_name = models.CharField(max_length=200, null=True, blank=True)
     database_desc = models.CharField(max_length=200)
     user = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
-    db_version = models.TextChoices('DB_VERSION', "ORA12.X ORA18.X ORA19.X")
+    db_version = models.ForeignKey(Database_version, on_delete=CASCADE, null=True, blank=True)
     environment = models.ForeignKey(Env, on_delete=CASCADE)
 
     class Meta:
@@ -170,3 +190,4 @@ class Database_info(models.Model):
 
     def __str__(self):
         return self.cluster_name
+
