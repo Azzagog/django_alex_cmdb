@@ -57,6 +57,25 @@ def environments(request):
     }
 
     return HttpResponse(template.render(context, request))
+def applications_detail(request,site_name, environment_description , application_name):
+    #err
+    template = loader.get_template('steplogic/application_detail.html')
+    site = Sites.objects.get(site_name=site_name)
+    environment = Env.objects.get(environment_description=environment_description)
+    application = Application.objects.get(application_name=application_name)    
+    application_modules_list = Application_module.objects.filter(application=application)
+    patches_list=Application_patches.objects.filter(application=application)    
+    print(type(environment))
+    print(type(application))
+    context= {
+        'site': site,
+        'environment' : environment,
+        'application' : application,
+        'application_modules_list' : application_modules_list,
+        'patches_list' : patches_list,
+    }
+
+    return HttpResponse(template.render(context,request))
 
 def environment_detail(request,site_name, environment_description):
     #err
