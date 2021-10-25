@@ -4,9 +4,7 @@ from django.http.response import Http404, HttpResponseServerError
 from steplogic.models import *
 from django.http import HttpResponse
 from django.template import loader
-from django.contrib.auth.models import Permission, User
 from django.shortcuts import get_object_or_404, render
-from django.contrib.auth import authenticate, login
 
 
 def index(request):

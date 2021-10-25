@@ -1,35 +1,12 @@
 version: "3.9"
    
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    expose: 
-      - "5432"
   web:
     build: .
     command: bash run_server.sh
     volumes:
       - .:/code
     environment:
-      - ENGINE=django.db.backends.postgresql
-      - NAME=postgres
-      - USER=postgres
-      - PASSWORD=postgres
-      - HOST=db
-      - PORT=5432
+      - ENGINE=django.db.backends.sqlite3
     ports:
       - "8000:8000"
-    depends_on:
-      - db
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080      
