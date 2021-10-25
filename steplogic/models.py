@@ -96,9 +96,9 @@ class Env(models.Model):
 class Application_module(models.Model):
     app_module_code = models.CharField(max_length=200)
     app_module_description = models.CharField(max_length=200)
-    app_url = models.CharField(max_length=200)
+    app_url = models.CharField(max_length=200, null=True, blank=True)
     app_bigip_url = models.CharField(max_length=200, null=True, blank=True)
-    app_port = models.CharField(max_length=200)
+    app_port = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Application modules"
@@ -119,7 +119,8 @@ class Application_middleware(models.Model):
 class Application(models.Model):
     application_name = models.CharField(max_length=200)
     application_desc = models.CharField(max_length=200)
-    application_patches = models.ManyToManyField(Application_patches)
+    application_patches = models.ManyToManyField(Application_patches, null=True, blank=True)
+    application_modules = models.ManyToManyField(Application_module, null=True, blank=True)
     middleware_description = models.ForeignKey(Application_middleware, on_delete=CASCADE)
     environment = models.ForeignKey(Env, on_delete=CASCADE)
 
