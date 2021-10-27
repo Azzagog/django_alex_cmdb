@@ -146,5 +146,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#django-cryptography
-
+#LOGIN_URL = '/steplogic/login'
+LOGIN_REDIRECT_URL = '/steplogic/'
+#LOGOUT_REDIRECT_URL = '/steplogic/'

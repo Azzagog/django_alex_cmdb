@@ -7,6 +7,18 @@ from django_cryptography.fields import encrypt
 
 # Create your models here.
 
+SERVER_ROLES = (
+    ('APPLICATION', 'Application'),
+    ('DB', 'DB'),
+)
+
+
+CREDENTIAL_TYPES = (
+    ('APPLICATION', 'Application'),
+    ('DB', 'DB')
+
+)
+
 class Contacts(models.Model):
     CONTACT_TYPES = models.TextChoices('ContactTtype', "type1 type2 type3" )
     first_name = models.CharField(max_length=200)
@@ -144,7 +156,8 @@ class Operating_system_info(models.Model):
 class Servers(models.Model):
     server_name = models.CharField(max_length=200)
     server_ip = models.CharField(max_length=200)
-    server_role_description = models.TextChoices('Role_desc', "APPLICATION DB")
+    #server_role_description = models.TextChoices('Role_desc', "APPLICATION DB")
+    server_role_description = models.CharField(max_length=11, choices=SERVER_ROLES)
     os_version = models.ForeignKey(Operating_system_info, on_delete=CASCADE, null=True, blank=True)
     environment = models.ForeignKey(Env, on_delete=CASCADE)
 
@@ -160,6 +173,7 @@ class Credentials(models.Model):
     credential_secret = encrypt(models.CharField(max_length=200))
     credential_description = models.CharField(max_length=200)
     environment = models.ForeignKey(Env, on_delete=CASCADE)
+    credential_type = models.CharField(max_length=11, choices=CREDENTIAL_TYPES)
 
     class Meta:
         verbose_name_plural = "Credentials"
@@ -181,10 +195,8 @@ class Database_info(models.Model):
     cluster_ip = models.CharField(max_length=200)
     service_name = models.CharField(max_length=200, null=True, blank=True)
     database_desc = models.CharField(max_length=200)
-    user = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
     db_version = models.ForeignKey(Database_version, on_delete=CASCADE, null=True, blank=True)
-    environment = models.ForeignKey(Env, on_delete=CASCADE)
+    environment = models.ManyToManyField(Env)
 
     class Meta:
         verbose_name_plural = "Databases info"

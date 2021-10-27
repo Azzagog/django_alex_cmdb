@@ -5,10 +5,14 @@ from steplogic.models import *
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import get_object_or_404, render
+from django.conf import settings
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def index(request):
-
+    # if not request.user.is_authenticated:
+    #     return render(request, 'steplogic/login_view.html')
     sites_list = Sites.objects.all().select_related('service_name').order_by('site_name')
     #services_list = Service_name.objects.order_by('id')
     #output = "\n".join([site.site_name for site in sites_list])
@@ -22,19 +26,12 @@ def index(request):
 
     return HttpResponse(template.render(context, request))
 
-def login_view(request):
-    sites_list2 = Sites.objects.all().select_related('service_name').order_by('site_name')
-    template2 = loader.get_template('steplogic/login_view.html')    
-    context2 = {
-        'sites_list': sites_list2,
-     #   'services_list': services_list
-    }     
-    return HttpResponse(template2.render(context2, request))
-
+@login_required
 def detail(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
     return render(request, 'steplogic/sites.html', {'site' : site})
 
+@login_required
 def contacts(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
     return render(request, 'steplogic/contacts.html', {'site' : site})
@@ -43,10 +40,12 @@ def contacts(request, site_name):
 #    site = get_object_or_404(Sites, site_name=site_name)
 #    return render(request, 'steplogic/environment.html', {'site' : site})
 
+@login_required
 def dependent_service(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
     return render(request, 'steplogic/dependent_service.html', {'site' : site})
 
+@login_required
 def environments(request):    
     environments_list = Env.objects.all()
     template = loader.get_template('steplogic/environment.html')
@@ -55,6 +54,8 @@ def environments(request):
     }
 
     return HttpResponse(template.render(context, request))
+
+@login_required    
 def applications_detail(request,site_name, environment_description , application_name):
     #err
     template = loader.get_template('steplogic/application_detail.html')
@@ -75,6 +76,7 @@ def applications_detail(request,site_name, environment_description , application
 
     return HttpResponse(template.render(context,request))
 
+@login_required
 def environment_detail(request,site_name, environment_description):
     #err
     template = loader.get_template('steplogic/environment_detail.html')
@@ -96,10 +98,13 @@ def environment_detail(request,site_name, environment_description):
 
     return HttpResponse(template.render(context,request))
 
+@login_required
 def edit(request, site_name):
+    ###TODO: add functionality for editing site
     response = "you are editing %s."
     return HttpResponse(response % site_name)
 
+@login_required
 def add(request):
     ###TODO: add functionality for adding site
     pass
