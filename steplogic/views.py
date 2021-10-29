@@ -51,6 +51,28 @@ def contacts(request):
     return HttpResponse(template.render(context, request))
 
 @login_required
+def databases(request):    
+    template = loader.get_template('steplogic/databases.html')
+    site = request.POST.get("site", "None")
+    
+    sites_all = Sites.objects.all()
+    dbenv_list = Database_info.environment.through.objects.all()
+    if(site == "None"):
+       environment_list = Env.objects.all()       
+       databases_list = Database_info.objects.all()
+    else:
+       environment_list = Env.objects.filter(site__site_name=site)       
+       databases_list = Database_info.objects.filter(environment__site__site_name=site)
+    context = {
+        'databases_list': databases_list,
+        'environment_list': environment_list,
+        'dbenv_list': dbenv_list,
+        'sites_all': sites_all,
+        'site': site,     
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required
 def credentials(request):    
     template = loader.get_template('steplogic/credentials.html')
     site = request.POST.get("site", "None")
