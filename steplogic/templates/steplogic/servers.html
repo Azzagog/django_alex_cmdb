@@ -53,8 +53,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       {% if user.is_authenticated %}
         <span>Welcome, <strong>{{ user.username }}</strong></span><br>
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
-        <a href="{% url 'logout' %}">Log Out</a>
+        <a href="{% url 'logout' %}" class="w3-bar-item w3-button"><i class="fa fa-sign-out"></i></a>        
       {% else %}
         <p>Welcome, new user. Please log in.</p>
       {% endif %}
@@ -66,12 +65,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   </div>
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
-    <a href="/steplogic" class="w3-bar-item w3-button w3-padding "><i class="fa fa-sitemap fa-fw"></i>&nbsp; Sites</a>
-    <a href="/steplogic/environments" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cubes fa-fw"></i>&nbsp; Environments</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>&nbsp; Contacts</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-key fa-fw"></i>&nbsp; Credentials</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-server fa-fw"></i>&nbsp; Servers</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-window-restore fa-fw"></i>&nbsp; Applications</a>
+    <a href="/steplogic/" class="w3-bar-item w3-button w3-padding "><i class="fa fa-sitemap fa-fw"></i>&nbsp; Sites</a>
+    <a href="/steplogic/environments/" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cubes fa-fw"></i>&nbsp; Environments</a>
+    <a href="/steplogic/contacts/" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>&nbsp; Contacts</a>
+    <a href="/steplogic/credentials/" class="w3-bar-item w3-button w3-padding"><i class="fa fa-key fa-fw"></i>&nbsp; Credentials</a>
+    <a href="/steplogic/servers/" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-server fa-fw"></i>&nbsp; Servers</a>
+    <a href="/steplogic/applications/" class="w3-bar-item w3-button w3-padding"><i class="fa fa-window-restore fa-fw"></i>&nbsp; Applications</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-database fa-fw"></i>&nbsp; Databases</a>    
   </div>
 </nav>
@@ -85,19 +84,19 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-sitemap "></i> ENVS</b></h5>
+    <h5><b><i class="fa fa-server "></i> SERVERS</b></h5>
   </header>
 
    <div class="w3-container">
-    <h5>Available Environments</h5>
-          {% if environments_list %}
+    <h5>Available Servers</h5>
+          {% if servers_list %}
           <table id="environmentstbl" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
             <thead>
-              <tr><th>Environment Description</th><th>BIG-ip URL</th><th>URL</th><th>environment_type</th></tr>
+              <tr><th>Server Name</th><th>Server IP</th><th>Server Role</th><th>Sever OS</th><th>Environment</th><th>Site</th></tr>
             </thead>  
             <tbody>
-              {% for environment in environments_list.all %}
-                <tr><td><a href="/steplogic/{{ environment.site }}/environments/{{ environment.environment_description }}">{{ environment.environment_description }}</a></td><td><a href="{{ environment.bigip_url }}">{{ environment.bigip_url }}</a></td><td><a href="{{ environment.url }}">{{ environment.url }}</a></td><td>{{ environment.get_environment_type_display }}</td></tr>
+              {% for servers in servers_list.all %}
+                <tr><td>{{ servers.server_name }}</td><td>{{ servers.server_ip }}</td><td>{{ servers.server_role_description }}</td><td>{{ servers.os_version }}</td><td>{{ servers.environment}}</td><td>{{ servers.environment.site}}</td></tr>
               {% endfor %}
             </tbody>
           </table>

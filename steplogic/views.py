@@ -32,10 +32,42 @@ def detail(request, site_name):
     return render(request, 'steplogic/sites.html', {'site' : site})
 
 @login_required
-def contacts(request, site_name):
-    site = get_object_or_404(Sites, site_name=site_name)
-    return render(request, 'steplogic/contacts.html', {'site' : site})
+def contacts(request):    
+    template = loader.get_template('steplogic/contacts.html')
+    site = request.POST.get("site", "None")
+    contacts_list = Contacts.objects.all()
+    sites_all = Sites.objects.all()
+    if(site == "None"):
+       sites_list = Sites.objects.all()
+    else:
+       sites_list = Sites.objects.get(site_name=site)       
 
+    context = {
+        'contacts_list': contacts_list,
+        'sites_list': sites_list,
+        'sites_all': sites_all,
+        'site': site,     
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required
+def credentials(request):    
+    template = loader.get_template('steplogic/credentials.html')
+    site = request.POST.get("site", "None")
+    credentials_list = Credentials.objects.all()
+    sites_all = Sites.objects.all()
+    if(site == "None"):
+       environment_list = Env.objects.all()
+    else:
+       environment_list = Env.objects.filter(site__site_name=site)
+
+    context = {
+        'credentials_list': credentials_list,
+        'environment_list': environment_list,
+        'sites_all': sites_all,
+        'site': site,     
+    }
+    return HttpResponse(template.render(context, request))
 #def environment(request, site_name):
 #    site = get_object_or_404(Sites, site_name=site_name)
 #    return render(request, 'steplogic/environment.html', {'site' : site})
@@ -44,6 +76,24 @@ def contacts(request, site_name):
 def dependent_service(request, site_name):
     site = get_object_or_404(Sites, site_name=site_name)
     return render(request, 'steplogic/dependent_service.html', {'site' : site})
+
+@login_required
+def applications(request):    
+    template = loader.get_template('steplogic/applications.html')
+    applications_list = Application.objects.all()    
+    context = {
+        'applications_list': applications_list,     
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required
+def servers(request):    
+    template = loader.get_template('steplogic/servers.html')
+    servers_list = Servers.objects.all()    
+    context = {
+        'servers_list': servers_list,     
+    }
+    return HttpResponse(template.render(context, request))    
 
 @login_required
 def environments(request):    
