@@ -131,6 +131,7 @@ class Application_middleware(models.Model):
 class Application(models.Model):
     application_name = models.CharField(max_length=200)
     application_desc = models.CharField(max_length=200)
+    application_version = models.CharField(max_length=30, null=True, blank=True)
     application_patches = models.ManyToManyField(Application_patches)
     application_modules = models.ManyToManyField(Application_module)
     middleware_description = models.ForeignKey(Application_middleware, on_delete=CASCADE)
