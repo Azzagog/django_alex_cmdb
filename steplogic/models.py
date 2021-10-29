@@ -160,7 +160,7 @@ class Servers(models.Model):
     #server_role_description = models.TextChoices('Role_desc', "APPLICATION DB")
     server_role_description = models.CharField(max_length=11, choices=SERVER_ROLES)
     os_version = models.ForeignKey(Operating_system_info, on_delete=CASCADE, null=True, blank=True)
-    environment = models.ForeignKey(Env, on_delete=CASCADE)
+    environment = models.ManyToManyField(Env)
 
     class Meta:
         verbose_name_plural = "Servers"
