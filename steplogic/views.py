@@ -111,11 +111,23 @@ def applications(request):
 @login_required
 def servers(request):    
     template = loader.get_template('steplogic/servers.html')
-    servers_list = Servers.objects.all()    
+    site = request.POST.get("site", "None")
+    
+    sites_all = Sites.objects.all()
+    
+    if(site == "None"):
+       environment_list = Env.objects.all()       
+       servers_list = Servers.objects.all()
+    else:
+       environment_list = Env.objects.filter(site__site_name=site)       
+       servers_list = Servers.objects.filter(environment__site__site_name=site)
     context = {
-        'servers_list': servers_list,     
+        'servers_list': servers_list,
+        'environment_list': environment_list,
+        'sites_all': sites_all,
+        'site': site,     
     }
-    return HttpResponse(template.render(context, request))    
+    return HttpResponse(template.render(context, request))  
 
 @login_required
 def environments(request):    
